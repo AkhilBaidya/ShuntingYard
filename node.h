@@ -7,6 +7,10 @@ class node {
 
  public:
 
+  //constructor and destructor
+  node(char);
+  ~node();
+  
   //content of itself
   void setVal(char);
   char getVal();

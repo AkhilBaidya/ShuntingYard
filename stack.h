@@ -6,8 +6,15 @@ using namespace std;
 
 class stack {
  public:
+  stack(); //constructor
+  ~stack(); //destructor
 
- private:
+  //functions:
+  void push(node*);
+  node* pop();
+  node* peek();
   
+ private:
+  node* header;
 };
 

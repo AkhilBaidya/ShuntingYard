@@ -4,12 +4,13 @@
 
 using namespace std;
 
-
 //its own content:
 void node::setVal(char input) {\
+  val = input;
 }
 
 char node::getVal() {
+  return val;
 }
 
 //the left node's content:

@@ -33,7 +33,9 @@ node* node::getR() {
 
 //the next node's content:
 void node::setN(node* input) {
+  next = input;
 }
 
 node* node::getN() {
+  return next;
 }

@@ -4,6 +4,21 @@
 
 using namespace std;
 
+//constructor
+node::node(char input) {
+  left = NULL;
+  right = NULL;
+  next = NULL;
+  val = input;
+}
+
+//destructor
+node::~node() { //delete pointers
+  delete left;
+  delete right;
+  delete next;
+}
+
 //its own content:
 void node::setVal(char input) {\
   val = input;

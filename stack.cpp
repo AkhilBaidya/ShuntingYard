@@ -22,6 +22,10 @@ void stack::push(node* input){
 
 
 node* stack::pop(){
+  node* prevHead = header;
+  header = header -> getN(); //delete header
+  return prevHead; //return header
 }
 node* stack::peek(){
+  return header; //simply return the top
 }

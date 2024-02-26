@@ -15,16 +15,20 @@ char node::getVal() {
 
 //the left node's content:
 void node::setL(node* input) {
+  left = input;
 }
 
 node* node::getL() {
+  return left;
 }
 
 //the right node's content:
 void node::setR(node* input) {
+  right = input;
 }
 
 node* node::getR() {
+  return right;
 }
 
 //the next node's content:

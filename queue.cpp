@@ -18,18 +18,25 @@ queue::~queue() {
 }
 
 void queue::enqueue(node* input) { //add to the end of the linked list
-  node* current = header;
-
-  while (current -> getN() != NULL) {
-    current = current -> getN();
+  node** current  = &header;
+  cout << "got head" << endl;
+  
+  while ((*current) != NULL) {
+    node* prevHead = *current;
+    (*current) -> setN(NULL);
+    cout << "saved current" << endl;
+    *current = prevHead -> getN();
+    cout << "moving on" << endl;
   } //point to the point where the next node is null
 
-  current -> setN(input); //put input there
+  cout << "set the input " << input -> getVal() << endl;
+  *current = input; //put input there
 }
 
 node* queue::dequeue() {
   node* prevHead = header;
   header = header -> getN(); //set next as the header (removing the header)
+  cout << "new header: " << header -> getVal() << endl;
   return prevHead; //return the previous top
 }
 

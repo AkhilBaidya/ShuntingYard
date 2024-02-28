@@ -32,3 +32,11 @@ node* queue::dequeue() {
   header = header -> getN(); //set next as the header (removing the header)
   return prevHead; //return the previous top
 }
+
+bool queue::isEmpty(){
+  if (header == NULL) {
+    return true;
+  }
+
+  return false;
+}

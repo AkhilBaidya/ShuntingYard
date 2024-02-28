@@ -13,6 +13,7 @@ class queue {
   //functions:
   void enqueue(node*);
   node* dequeue();
+  bool isEmpty();
   
  private:
   node* header;

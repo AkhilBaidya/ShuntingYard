@@ -1,3 +1,7 @@
+
+#ifndef NODE
+#define NODE
+
 #include <iostream>
 #include <cstring>
 
@@ -34,3 +38,4 @@ class node {
   char val;
 };
 
+#endif

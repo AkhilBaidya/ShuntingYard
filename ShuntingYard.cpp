@@ -19,9 +19,12 @@ int main() {
     cout << "in loop " << endl;
     
     node* toAdd = new node(input);
-    cout << "read in " << input << endl;
+    cout << "read in " << (int)input << endl;
+
+    //https://www.cs.cmu.edu/~pattis/15-1XX/common/handouts/ascii.html (referred to this for ASCII conversions)
     
-    if ((int)input >= 0 && (int) input <= 9) { //a number
+    if ((int)input >= 48 && (int) input <= 57) { //a number
+      cout << "adding to queue" << endl;
       numbers -> enqueue(toAdd);
       cout << "added to queue" << endl;
     }
@@ -39,19 +42,21 @@ int main() {
 
   //READ OUT POSTFIX NOTATION:
   cout << "Here is the postfix notation (using Shunting Yard algorithm): ";
-  char toAddNum;
-  char toAddOp;
+  node* toAddNum;
+  node* toAddOp;
 
   //cout the numbers
-  while (numbers -> dequeue() != NULL) {
+  cout << "Going to read out the queue" << endl;
+  while (numbers -> isEmpty() == false) {
+    cout << "trying" << endl;
     toAddNum = numbers -> dequeue();
-    cout << toAddNum << " ";
+    cout << toAddNum -> getVal() << " ";
   }
 
   //cout the operators
   while (operators -> peek() != NULL) {
     toAddOp = operators -> pop();
-    cout << toAddOp << " ";
+    cout << toAddOp -> getVal() << " ";
   }
 
   cout << endl;

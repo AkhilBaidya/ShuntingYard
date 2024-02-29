@@ -10,7 +10,7 @@ node::node(char input) {
   right = NULL;
   next = NULL;
   val = input;
-  precedence = 10;
+  precedence = 0;
 
   if (val == '^') {
     precedence = 3;

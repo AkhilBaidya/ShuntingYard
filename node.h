@@ -38,6 +38,7 @@ class node {
   node* right;
   node* next;
   char val;
+  int precedence;
 };
 
 #endif

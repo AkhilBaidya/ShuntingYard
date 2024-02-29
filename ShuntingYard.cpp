@@ -37,7 +37,7 @@ int main() {
 	
       }
       
-      else if (input -> getOrd() < operators -> peek() -> getOrd() && input -> getVal() != '(') { //if the operator we are adding is less in precedence, pop out the current head of stack to the queue (does not apply to left parenthesis)
+      else if (input -> getOrd() <= operators -> peek() -> getOrd() && input -> getVal() != '(') { //if the operator we are adding is less in precedence, pop out the current head of stack to the queue (does not apply to left parenthesis)
 	node* op = operators -> pop();
 	numbers -> enqueue(op);
       }

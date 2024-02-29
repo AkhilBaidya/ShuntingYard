@@ -76,3 +76,7 @@ void node::setN(node* input) {
 node* node::getN() {
   return next;
 }
+
+int node::getOrd() {
+  return precedence;
+}

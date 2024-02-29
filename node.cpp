@@ -10,6 +10,18 @@ node::node(char input) {
   right = NULL;
   next = NULL;
   val = input;
+  precedence = 10;
+
+  if (val == '^') {
+    precedence = 3;
+  }
+  else if (val == '/' || val == '*') {
+    precedence = 2;
+  }
+  else if (val == '+' || val == '-') {
+    precedence = 1;
+  }
+  
 }
 
 //destructor
@@ -22,6 +34,16 @@ node::~node() { //delete pointers
 //its own content:
 void node::setVal(char input) {\
   val = input;
+  
+  if (val == '^') {
+    precedence = 3;
+  }
+  else if (val == '/' || val == '*') {
+    precedence = 2;
+  }
+  else if (val == '+' || val == '-') {
+    precedence = 1;
+  }
 }
 
 char node::getVal() {

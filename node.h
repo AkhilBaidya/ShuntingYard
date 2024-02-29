@@ -33,6 +33,9 @@ class node {
   void setN(node*);
   node* getN();
 
+  //get precedence
+  int getOrd();
+
  protected:
   node* left;
   node* right;

@@ -22,8 +22,25 @@ int main() {
       numbers -> enqueue(toAdd);
       cout << "added to queue" << endl;
     }
-
     else if (input != ' ') { //consider the input an operator
+
+      //referred to https://en.wikipedia.org/wiki/Shunting_yard_algorithm for revisions with algorithm Shunting Yard
+      
+      if (input == ')') { //if met with a right parenthesis need to output everything (all operators) within the parenthesis (as they are typically solved first in infix)
+
+	while (operators -> peek() -> getVal() != '(') {
+	  node* op = operators -> pop();
+	  numbers -> enqueue(op);
+	}
+	numbers -> enqueue(operators -> pop()) { //add the left parenthesis at the end
+	}
+	
+      }
+      
+      else if (input -> getOrd() < operators -> peek() -> getOrd() && input -> getVal() != '(') { //if the operator we are adding is less in precedence, pop out the current head of stack to the queue (does not apply to left parenthesis)
+	node* op = operators -> pop();
+	numbers -> enqueue(op);
+      }
       operators -> push(toAdd);
       cout << "added to stack" << endl;
     }

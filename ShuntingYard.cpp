@@ -32,12 +32,12 @@ int main() {
 	  node* op = operators -> pop();
 	  numbers -> enqueue(op);
 	}
-	numbers -> enqueue(operators -> pop()) { //add the left parenthesis at the end
-	}
+	numbers -> enqueue(operators -> pop()); //add the left parenthesis at the end
+	
 	
       }
       
-      else if (input -> getOrd() <= operators -> peek() -> getOrd() && input -> getVal() != '(') { //if the operator we are adding is less in precedence, pop out the current head of stack to the queue (does not apply to left parenthesis)
+      else if (toAdd -> getOrd() <= operators -> peek() -> getOrd() && input != '(') { //if the operator we are adding is less in precedence, pop out the current head of stack to the queue (does not apply to left parenthesis)
 	node* op = operators -> pop();
 	numbers -> enqueue(op);
       }

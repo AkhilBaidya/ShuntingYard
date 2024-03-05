@@ -50,10 +50,14 @@ void queue::enqueue(node* &input) { //add to the end of the linked list
 }
 
 node* queue::dequeue() {
-  node* prevHead = new node();
-  prevHead = header;
-  header = prevHead -> getN(); //set next as the header (removing the header)
-  return prevHead; //return the previous top
+  node* prevHead = header;
+  prevHead -> setN(NULL);
+
+  node* toRet = new node(prevHead -> getVal());
+  header = header -> getN(); //set next as the header (removing the header)
+  delete prevHead;
+  
+  return toRet; //return the previous top
 }
 
 bool queue::isEmpty(){

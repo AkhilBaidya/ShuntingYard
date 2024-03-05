@@ -10,7 +10,7 @@ class stack {
   ~stack(); //destructor
 
   //functions:
-  void push(node*);
+  void push(node* &);
   node* pop();
   node* peek();
   

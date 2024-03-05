@@ -20,14 +20,15 @@ stack::~stack(){
 }
 
 //functions
-void stack::push(node* input){
+void stack::push(node* &input){
   node* prevHead = header;
   header = input;
   header -> setN(prevHead); //keep on adding to the top
 }
 
 node* stack::pop(){
-  node* prevHead = header;
+  node* prevHead = new node();
+  prevHead = header;
   header = header -> getN(); //delete header
   return prevHead; //return header
 }

@@ -11,7 +11,7 @@ class queue {
   ~queue(); //destructor
 
   //functions:
-  void enqueue(node*);
+  void enqueue(node* &);
   node* dequeue();
   bool isEmpty();
   

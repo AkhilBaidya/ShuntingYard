@@ -5,6 +5,14 @@
 using namespace std;
 
 //constructor
+
+node::node() {
+  left = NULL;
+  right = NULL;
+  next = NULL;
+  precedence = 0;
+}
+
 node::node(char input) {
   left = NULL;
   right = NULL;

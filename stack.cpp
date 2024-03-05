@@ -27,10 +27,13 @@ void stack::push(node* &input){
 }
 
 node* stack::pop(){
-  node* prevHead = new node();
-  prevHead = header;
+  node* prevHead = header;
+  prevHead -> setN(NULL);
+  
+  node* toRet = new node(prevHead -> getVal()); 
   header = header -> getN(); //delete header
-  return prevHead; //return header
+  delete prevHead;
+  return toRet; //return header
 }
 node* stack::peek(){
   return header; //simply return the top

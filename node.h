@@ -14,6 +14,7 @@ class node {
   //referred to https://www.learncpp.com/cpp-tutorial/header-guards/ for how to write a header guard
   
   //constructor and destructor
+  node();
   node(char);
   ~node();
   

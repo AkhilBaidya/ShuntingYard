@@ -17,7 +17,7 @@ queue::~queue() {
   } //remove all elements from the list
 }
 
-void queue::enqueue(node* &input) { //add to the end of the linked list
+void queue::enqueue(node* input) { //add to the end of the linked list
 
   if (header == NULL) {
     header = input;

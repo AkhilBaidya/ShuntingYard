@@ -6,6 +6,9 @@
 using namespace std;
 
 void createTree(queue*&, stack*&);
+void readPost(node*);
+void readInf(node*);
+void readPre(node*);
 
 int main() {
 
@@ -106,14 +109,46 @@ int main() {
   cout << endl;
 
   createTree(postFix, tree);
+
+  node* base = new node();
+  base = tree -> peek();
+  cout << base -> getVal() << endl;
+  if (base -> getL() != NULL) {
+    cout << base -> getL() -> getVal() << endl;
+    if (base -> getL() -> getL() != NULL) {
+      cout << base -> getL() -> getL() -> getVal() << endl;
+    }
+    if (base -> getL() -> getR() != NULL) {
+      cout << base -> getL() -> getR() -> getVal() << endl;
+    }
+  }
+
+  if (base -> getR() != NULL) {
+    cout << base -> getR() -> getVal() << endl;
+    if (base -> getR() -> getL() != NULL) {
+      cout << base -> getR() -> getL() -> getVal() << endl;
+    }
+    if (base -> getR() -> getR() != NULL) {
+      cout << base -> getR() -> getR() -> getVal() << endl;
+    }
+  }
+    
+  readPost(base);
   
   return 0;
 }
 
 void createTree(queue* &postFix, stack* &tree) {
 
+  node* right = new node();
+  node* left = new node();
+  
   while (postFix -> isEmpty() == false) {
 
+    if (tree -> peek() != NULL) {
+    cout << "currently last in stack: " << tree -> peek() -> getVal();
+    }
+    
     node* entry = postFix -> dequeue();
     int val = (int)(entry -> getVal());
     //cout << entry -> getVal() << ": " << val << endl;
@@ -130,13 +165,22 @@ void createTree(queue* &postFix, stack* &tree) {
     cout << "done with nums" << endl;
     //pop out the last two elements of the stack and add it to entry
     //node* current = new node();
-    
+    entry -> setN(NULL);
     if (tree -> peek() != NULL && tree -> peek() -> getN() != NULL) {
       cout << "entered" << endl;
 
-      entry -> setL(tree -> pop());
-      entry -> setR(tree -> pop());
-      
+      //node* right = new node();
+      right = tree -> pop();
+      entry -> setR(right);
+      cout << "set right of " << entry -> getVal() << "to be " << entry -> getR() -> getVal() << endl;
+
+      //node* left = new node();
+      left = tree -> pop();
+      entry -> setL(left);
+      cout << "set left of " << entry -> getVal() << "to be " << entry -> getL() -> getVal() << endl;
+      tree -> push(entry);
+      cout << "added to tree: " << tree -> peek() -> getVal() << endl;
+      //cout << "to be" << tree -> peek() -> getL() -> getVal() << endl;
       //current = tree -> peek();
       //cout << "tree is not empty: " << tree -> peek() -> getN() -> getVal() << endl;
     }
@@ -161,10 +205,60 @@ void createTree(queue* &postFix, stack* &tree) {
     current -> setN(NULL);
     */
     //add entry to stack(
-    tree -> push(entry);
+    //tree -> push(entry);
+  }
+  
+  node* base = new node();
+  base = tree -> peek();
+  cout << base -> getVal() << endl;
+  if (base -> getL() != NULL) {
+    cout << base -> getL() -> getVal() << endl;
+    if (base -> getL() -> getL() != NULL) {
+      cout << base -> getL() -> getL() -> getVal() << endl;
+    }
+    if (base -> getL() -> getR() != NULL) {
+      cout << base -> getL() -> getR() -> getVal() << endl;
+    }
   }
 
+  if (base -> getR() != NULL) {
+    cout << base -> getR() -> getVal() << endl;
+    if (base -> getR() -> getL() != NULL) {
+      cout << base -> getR() -> getL() -> getVal() << endl;
+    }
+    if (base -> getR() -> getR() != NULL) {
+      cout << base -> getR() -> getR() -> getVal() << endl;
+    }
+  }
   cout << "done with tree making" << endl;
   return;
+}
+
+void readPost(node* current) {
+
+  cout << current -> getVal() << " ";
+  
+  if (current -> getL() == NULL && current -> getR() == NULL) {
+    //cout << current -> getVal() << " ";
+  return; //if at end of left travel print
+  }
+
+  readPost(current -> getL()); //recurse left
+
+    //if (current -> getR() == NULL) {
+    //cout << current -> getVal() << " ";
+    //return; //if at end of right travel print
+    //}
+    
+    readPost(current -> getR()); //recurse right
+    //cout << current -> getVal() << " ";
+  return;
+  
+}
+void readInf(node* current) {
+
+}
+void readPre(node* current) {
+
 }
 

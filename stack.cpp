@@ -20,7 +20,7 @@ stack::~stack(){
 }
 
 //functions
-void stack::push(node* &input){
+void stack::push(node* input){
   node* prevHead = header;
   header = input;
   header -> setN(prevHead); //keep on adding to the top
@@ -28,10 +28,14 @@ void stack::push(node* &input){
 
 node* stack::pop(){
 
-  node* popped = new node();
+  node* prevHead;
   
   if (header -> getN() != NULL) {
-    node* prevHead = new node();
+
+    prevHead = header;
+    header = header -> getN();
+    prevHead -> setN(NULL);
+    /*node* prevHead = new node();
     prevHead = header;
     cout << "header value: " << prevHead -> getVal() << endl;
     popped -> setVal(prevHead -> getVal());
@@ -46,13 +50,14 @@ node* stack::pop(){
     delete prevHead;
     cout << "then" << endl;
     cout << "checking return val: " << popped -> getVal() << endl;
+    */
   }
 
   else {
-    popped -> setVal(header -> getVal());
+    prevHead = header;
     header = NULL;
   }
-  return popped; //return header
+  return prevHead; //return header
 }
 node* stack::peek(){
   return header; //simply return the top

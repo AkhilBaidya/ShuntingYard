@@ -76,6 +76,8 @@ int main() {
   cout << "Here is the postfix notation (using Shunting Yard algorithm): ";
   node* toAddNum;
   node* toAddOp;
+  queue* postFix = new queue();
+  stack* tree = new stack();
 
   //cout << numbers -> dequeue() -> getVal(); 
   //cout the numbers
@@ -86,6 +88,7 @@ int main() {
   toAddNum = numbers -> dequeue();
   if (toAddNum -> getVal() != '(' && toAddNum -> getVal() != ')') {
     cout << toAddNum -> getVal() << " ";
+    postFix -> enqueue(toAddNum);
   }
   }
 
@@ -94,10 +97,31 @@ int main() {
   while (operators -> peek() != NULL) {
   toAddOp = operators -> pop();
   if(toAddOp -> getVal() != '(' && toAddOp -> getVal() != ')') {
-  cout << toAddOp -> getVal() << " ";
+    cout << toAddOp -> getVal() << " ";
+    postFix -> enqueue(toAddOp);
   }
   }
   cout << endl;
+
+  createTree(postFix, tree);
+  
   return 0;
+}
+
+void createTree(queue* &postFix, stack* &tree) {
+
+  while (postFix -> isEmpty() == false) {
+
+    node* entry = postFix -> dequeue();
+
+    while (entry -> (int)getVal() >= 48 && entry -> (int)getVal() <= 57) {
+
+      tree -> push(entry);
+      entry = postFix -> dequeue();
+
+    }
+  }
+  
+  return;
 }
 

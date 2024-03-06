@@ -27,15 +27,32 @@ void stack::push(node* &input){
 }
 
 node* stack::pop(){
-  node* prevHead = new node();
-  prevHead = header;
-  //prevHead -> setN(NULL);
+
+  node* popped = new node();
   
-  //node* toRet = new node(prevHead -> getVal()); 
-  header = header -> getN(); //delete header
-  //delete prevHead;
-  //cout << "Adding from Stack: " << toRet -> getVal() << endl;
-  return prevHead; //return header
+  if (header -> getN() != NULL) {
+    node* prevHead = new node();
+    prevHead = header;
+    cout << "header value: " << prevHead -> getVal() << endl;
+    popped -> setVal(prevHead -> getVal());
+    cout << "value going to pop (should be same): " << popped -> getVal() << endl;
+    cout << "header's next val: " << header -> getN() -> getVal() << endl;
+    //node* toRet = new node(prevHead -> getVal()); 
+    header = header -> getN(); //delete header
+    cout << "header's moved to next (should be same): " << header -> getVal() << endl;
+  
+    cout << "going to delete the old header junk " << (*prevHead).getVal() << endl;
+    prevHead -> setN(NULL);
+    delete prevHead;
+    cout << "then" << endl;
+    cout << "checking return val: " << popped -> getVal() << endl;
+  }
+
+  else {
+    popped -> setVal(header -> getVal());
+    header = NULL;
+  }
+  return popped; //return header
 }
 node* stack::peek(){
   return header; //simply return the top

@@ -105,7 +105,7 @@ int main() {
   }
   cout << endl;
 
-  //createTree(postFix, tree);
+  createTree(postFix, tree);
   
   return 0;
 }
@@ -116,22 +116,34 @@ void createTree(queue* &postFix, stack* &tree) {
 
     node* entry = postFix -> dequeue();
     int val = (int)(entry -> getVal());
+    //cout << entry -> getVal() << ": " << val << endl;
     while (val >= 48 && val <= 57) { //a number
-
+      
       tree -> push(entry);
+      cout << tree -> peek() -> getVal() << endl;
       entry = postFix -> dequeue();
-
+      val = (int)(entry -> getVal());
+      entry -> setN(NULL);
+      cout << "push to tree" << endl;
     }
 
+    cout << "done with nums" << endl;
     //pop out the last two elements of the stack and add it to entry
-    node* current = new node();
+    //node* current = new node();
     
-    if (tree -> peek() != NULL) {
-      current = tree -> peek();
-    }
+    if (tree -> peek() != NULL && tree -> peek() -> getN() != NULL) {
+      cout << "entered" << endl;
 
-    while (current -> getN() -> getN() != NULL) {
+      entry -> setL(tree -> pop());
+      entry -> setR(tree -> pop());
+      
+      //current = tree -> peek();
+      //cout << "tree is not empty: " << tree -> peek() -> getN() -> getVal() << endl;
+    }
+    
+    /*while (current -> getN() -> getN() != NULL) {
       current = current -> getN();
+      cout << "here an error" << endl;
     }
 
     entry -> setR(current -> getN());
@@ -147,11 +159,12 @@ void createTree(queue* &postFix, stack* &tree) {
 
     entry -> setL(current -> getN());
     current -> setN(NULL);
-
-    //add entry to stack
+    */
+    //add entry to stack(
     tree -> push(entry);
   }
-  
+
+  cout << "done with tree making" << endl;
   return;
 }
 

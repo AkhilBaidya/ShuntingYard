@@ -112,8 +112,11 @@ int main() {
   node* base = new node();
   base = tree -> peek();
   readPost(base);
+  cout << endl;
   readInf(base, 0);
-  
+  cout << endl;
+  readPre(base);
+  cout << endl;
   return 0;
 }
 
@@ -211,18 +214,25 @@ void readInf(node* current, int dir) { //1 left -1 right
   }
 
   readInf(current -> getL(), 1);
-  if (dir == -1) {
-    cout << current -> getVal() << " ) ";
-  }
-  else if (dir == 1) {
-    cout << "( " << current -> getVal() << " "; 
-  }
-  else {
+  //if (dir == -1) {
+  //cout << current -> getVal() << " ) ";
+  //}
+  //else if (dir == 1) {
+  //cout << "( " << current -> getVal() << " "; 
+  //}
+  //else {
     cout << current -> getVal() << " ";
-  }
+    //}
   readInf(current -> getR(), -1);
 }
 void readPre(node* current) {
-  
+  if (current -> getL() == NULL || current -> getR() == NULL) {
+    cout << current -> getVal() << " ";
+    return;
+  }
+
+  cout << current -> getVal() << " ";
+  readPre(current -> getL());
+  readPre(current -> getR());
 }
 

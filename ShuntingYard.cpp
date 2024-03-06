@@ -74,8 +74,8 @@ int main() {
   //cout << "Here is queue after loop: " << numbers -> dequeue() -> getVal() << endl;
   //READ OUT POSTFIX NOTATION:
   cout << "Here is the postfix notation (using Shunting Yard algorithm): ";
-  node* toAddNum;
-  node* toAddOp;
+  node* toAddNum = new node();
+  node* toAddOp = new node();
   queue* postFix = new queue();
   stack* tree = new stack();
 
@@ -86,6 +86,7 @@ int main() {
   
   while (numbers -> isEmpty() == false) {
   toAddNum = numbers -> dequeue();
+  toAddNum -> setN(NULL);
   if (toAddNum -> getVal() != '(' && toAddNum -> getVal() != ')') {
     cout << toAddNum -> getVal() << " ";
     postFix -> enqueue(toAddNum);
@@ -96,6 +97,7 @@ int main() {
   //cout the operators
   while (operators -> peek() != NULL) {
   toAddOp = operators -> pop();
+  toAddOp -> setN(NULL);
   if(toAddOp -> getVal() != '(' && toAddOp -> getVal() != ')') {
     cout << toAddOp -> getVal() << " ";
     postFix -> enqueue(toAddOp);
@@ -103,7 +105,7 @@ int main() {
   }
   cout << endl;
 
-  createTree(postFix, tree);
+  //createTree(postFix, tree);
   
   return 0;
 }
@@ -113,13 +115,41 @@ void createTree(queue* &postFix, stack* &tree) {
   while (postFix -> isEmpty() == false) {
 
     node* entry = postFix -> dequeue();
-
-    while (entry -> (int)getVal() >= 48 && entry -> (int)getVal() <= 57) {
+    int val = (int)(entry -> getVal());
+    while (val >= 48 && val <= 57) { //a number
 
       tree -> push(entry);
       entry = postFix -> dequeue();
 
     }
+
+    //pop out the last two elements of the stack and add it to entry
+    node* current = new node();
+    
+    if (tree -> peek() != NULL) {
+      current = tree -> peek();
+    }
+
+    while (current -> getN() -> getN() != NULL) {
+      current = current -> getN();
+    }
+
+    entry -> setR(current -> getN());
+    current -> setN(NULL);
+    
+    if (tree -> peek() != NULL) {
+      current = tree -> peek();
+    }
+
+    while (current -> getN() -> getN() != NULL) {
+      current = current -> getN();
+    }
+
+    entry -> setL(current -> getN());
+    current -> setN(NULL);
+
+    //add entry to stack
+    tree -> push(entry);
   }
   
   return;

@@ -23,6 +23,10 @@ void queue::enqueue(node* &input) { //add to the end of the linked list
     header = input;
   }
 
+  else if (header -> getN() == NULL) {
+    header -> setN(input);
+  }
+
   else {
 
     node* current = header;
@@ -50,14 +54,23 @@ void queue::enqueue(node* &input) { //add to the end of the linked list
 }
 
 node* queue::dequeue() {
+
   node* prevHead = new node();
-  prevHead  = header;
+  
+  if (header -> getN() == NULL) {
+    prevHead = header;
+    header = NULL;
+  }
+
+  else {
+  
+    prevHead  = header;
   //prevHead -> setN(NULL);
 
   //node* toRet = new node(prevHead -> getVal());
-  header = header -> getN(); //set next as the header (removing the header)
+    header = header -> getN(); //set next as the header (removing the header)
   //delete prevHead;
-
+  }
 
   //cout << "Going to return " << toRet -> getVal() << endl;
   return prevHead; //return the previous top

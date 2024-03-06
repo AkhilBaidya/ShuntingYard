@@ -108,31 +108,7 @@ int main() {
   }
   cout << endl;
 
-  createTree(postFix, tree);
-
-  node* base = new node();
-  base = tree -> peek();
-  cout << base -> getVal() << endl;
-  if (base -> getL() != NULL) {
-    cout << base -> getL() -> getVal() << endl;
-    if (base -> getL() -> getL() != NULL) {
-      cout << base -> getL() -> getL() -> getVal() << endl;
-    }
-    if (base -> getL() -> getR() != NULL) {
-      cout << base -> getL() -> getR() -> getVal() << endl;
-    }
-  }
-
-  if (base -> getR() != NULL) {
-    cout << base -> getR() -> getVal() << endl;
-    if (base -> getR() -> getL() != NULL) {
-      cout << base -> getR() -> getL() -> getVal() << endl;
-    }
-    if (base -> getR() -> getR() != NULL) {
-      cout << base -> getR() -> getR() -> getVal() << endl;
-    }
-  }
-    
+  createTree(postFix, tree);    
   readPost(base);
   
   return 0;
@@ -184,52 +160,8 @@ void createTree(queue* &postFix, stack* &tree) {
       //current = tree -> peek();
       //cout << "tree is not empty: " << tree -> peek() -> getN() -> getVal() << endl;
     }
-    
-    /*while (current -> getN() -> getN() != NULL) {
-      current = current -> getN();
-      cout << "here an error" << endl;
-    }
-
-    entry -> setR(current -> getN());
-    current -> setN(NULL);
-    
-    if (tree -> peek() != NULL) {
-      current = tree -> peek();
-    }
-
-    while (current -> getN() -> getN() != NULL) {
-      current = current -> getN();
-    }
-
-    entry -> setL(current -> getN());
-    current -> setN(NULL);
-    */
-    //add entry to stack(
-    //tree -> push(entry);
   }
   
-  node* base = new node();
-  base = tree -> peek();
-  cout << base -> getVal() << endl;
-  if (base -> getL() != NULL) {
-    cout << base -> getL() -> getVal() << endl;
-    if (base -> getL() -> getL() != NULL) {
-      cout << base -> getL() -> getL() -> getVal() << endl;
-    }
-    if (base -> getL() -> getR() != NULL) {
-      cout << base -> getL() -> getR() -> getVal() << endl;
-    }
-  }
-
-  if (base -> getR() != NULL) {
-    cout << base -> getR() -> getVal() << endl;
-    if (base -> getR() -> getL() != NULL) {
-      cout << base -> getR() -> getL() -> getVal() << endl;
-    }
-    if (base -> getR() -> getR() != NULL) {
-      cout << base -> getR() -> getR() -> getVal() << endl;
-    }
-  }
   cout << "done with tree making" << endl;
   return;
 }

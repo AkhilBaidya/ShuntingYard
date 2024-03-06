@@ -5,8 +5,8 @@
 
 using namespace std;
 
-void createTree(queue*&, stack*&);
-void readPost(node*);
+void createTree(queue*, stack*);
+void readPost(node*, int);
 void readInf(node*);
 void readPre(node*);
 
@@ -108,16 +108,18 @@ int main() {
   }
   cout << endl;
 
-  createTree(postFix, tree);    
-  readPost(base);
+  createTree(postFix, tree);
+  node* base = new node();
+  base = tree -> peek();
+  readPost(base, 0);
   
   return 0;
 }
 
-void createTree(queue* &postFix, stack* &tree) {
+void createTree(queue* postFix, stack* tree) {
 
-  node* right = new node();
-  node* left = new node();
+  //node* right;
+  //node* left;
   
   while (postFix -> isEmpty() == false) {
 
@@ -134,24 +136,24 @@ void createTree(queue* &postFix, stack* &tree) {
       cout << tree -> peek() -> getVal() << endl;
       entry = postFix -> dequeue();
       val = (int)(entry -> getVal());
-      entry -> setN(NULL);
+      //entry -> setN(NULL);
       cout << "push to tree" << endl;
     }
 
     cout << "done with nums" << endl;
     //pop out the last two elements of the stack and add it to entry
     //node* current = new node();
-    entry -> setN(NULL);
+    //entry -> setN(NULL);
     if (tree -> peek() != NULL && tree -> peek() -> getN() != NULL) {
       cout << "entered" << endl;
 
       //node* right = new node();
-      right = tree -> pop();
+      node* right = tree -> pop();
       entry -> setR(right);
       cout << "set right of " << entry -> getVal() << "to be " << entry -> getR() -> getVal() << endl;
 
       //node* left = new node();
-      left = tree -> pop();
+      node* left = tree -> pop();
       entry -> setL(left);
       cout << "set left of " << entry -> getVal() << "to be " << entry -> getL() -> getVal() << endl;
       tree -> push(entry);
@@ -163,15 +165,23 @@ void createTree(queue* &postFix, stack* &tree) {
   }
   
   cout << "done with tree making" << endl;
+  cout << tree -> peek() -> getVal() << endl;
+  cout << tree -> peek() -> getR() -> getVal() << endl;
+  if (tree -> peek() -> getR() -> getR() != NULL) {
+    cout << tree -> peek() -> getR() -> getR() -> getVal() << endl;
+  }
+  else {
+    cout << "no grandchild" << endl;
+  }
   return;
 }
 
 void readPost(node* current) {
 
-  cout << current -> getVal() << " ";
+  //cout << current -> getVal() << " ";
   
   if (current -> getL() == NULL && current -> getR() == NULL) {
-    //cout << current -> getVal() << " ";
+    cout << current -> getVal() << " ";
   return; //if at end of left travel print
   }
 
@@ -182,8 +192,8 @@ void readPost(node* current) {
     //return; //if at end of right travel print
     //}
     
-    readPost(current -> getR()); //recurse right
-    //cout << current -> getVal() << " ";
+  readPost(current -> getR()); //recurse right
+  cout <<current -> getVal() << " ";
   return;
   
 }

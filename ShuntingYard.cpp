@@ -6,8 +6,8 @@
 using namespace std;
 
 void createTree(queue*, stack*);
-void readPost(node*, int);
-void readInf(node*);
+void readPost(node*);
+void readInf(node*, int);
 void readPre(node*);
 
 int main() {
@@ -111,7 +111,8 @@ int main() {
   createTree(postFix, tree);
   node* base = new node();
   base = tree -> peek();
-  readPost(base, 0);
+  readPost(base);
+  readInf(base, 1);
   
   return 0;
 }
@@ -182,7 +183,7 @@ void readPost(node* current) {
   
   if (current -> getL() == NULL && current -> getR() == NULL) {
     cout << current -> getVal() << " ";
-  return; //if at end of left travel print
+  return; //if at end of left or right travel print
   }
 
   readPost(current -> getL()); //recurse left
@@ -197,10 +198,25 @@ void readPost(node* current) {
   return;
   
 }
-void readInf(node* current) {
+void readInf(node* current, int dir) { //1 left -1 right
+  if (current -> getL() == NULL) {
 
+    if (dir == 1) {
+      cout << "( " << current -> getVal() << " ";
+    }
+    else if (dir == -1) {
+      cout << current -> getVal() << " ) ";
+    }
+    return;
+  }
+
+  readInf(current -> getL(), 1);
+  cout << current -> getVal() << " ";
+  readInf(current -> getR(), -1);
 }
 void readPre(node* current) {
 
+  
+  
 }
 

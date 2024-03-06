@@ -5,6 +5,8 @@
 
 using namespace std;
 
+void createTree(queue*&, stack*&);
+
 int main() {
 
   queue* numbers = new queue();
@@ -82,14 +84,18 @@ int main() {
   
   while (numbers -> isEmpty() == false) {
   toAddNum = numbers -> dequeue();
-  cout << toAddNum -> getVal() << " ";
+  if (toAddNum -> getVal() != '(' && toAddNum -> getVal() != ')') {
+    cout << toAddNum -> getVal() << " ";
+  }
   }
 
   cout << "from stack" << endl;
   //cout the operators
   while (operators -> peek() != NULL) {
   toAddOp = operators -> pop();
-   cout << toAddOp -> getVal() << " ";
+  if(toAddOp -> getVal() != '(' && toAddOp -> getVal() != ')') {
+  cout << toAddOp -> getVal() << " ";
+  }
   }
   cout << endl;
   return 0;

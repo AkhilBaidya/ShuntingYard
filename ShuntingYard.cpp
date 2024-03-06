@@ -38,26 +38,38 @@ int main() {
       if (input == ')' && operators -> peek() != NULL) { //if met with a right parenthesis need to output everything (all operators) within the parenthesis (as they are typically solved first in infix)
 
 	while (operators -> peek() -> getVal() != '(') {
-	  node* op = operators -> pop();
+	  node* op = new node();
+	  op = operators -> pop();
 	  numbers -> enqueue(op);
 	}
-	numbers -> enqueue(operators -> pop()); //add the left parenthesis at the end
+
+	node* op = new node();
+	op = operators -> pop();
+	numbers -> enqueue(op); //add the left parenthesis at the end
 	
 	
       }
       
       else if (operators -> peek() != NULL && toAdd -> getOrd() <= operators -> peek() -> getOrd() && input != '(') { //if the operator we are adding is less in precedence, pop out the current head of stack to the queue (does not apply to left parenthesis)
-	node* op = operators -> pop();
-	cout << "looking at " << op -> getVal() << "against the new " << input << endl;
-	numbers -> enqueue(op);
-	cout << "moved " << op -> getVal() << " to queue" << endl;
+
+	while (operators -> peek() != NULL && toAdd -> getOrd() <= operators -> peek() -> getOrd()) {
+	  node* op = new node();
+	  op = operators -> pop();
+	  cout << "looking at " << op -> getVal() << "against the new " << input << endl;
+	  numbers -> enqueue(op);
+	  cout << "moved " << op -> getVal() << " to queue" << endl;
+	}
+	operators -> push(toAdd);
       }
-      operators -> push(toAdd);
+      
+      else {
+	operators -> push(toAdd);
+      }
       cout << "added " << input << " to stack" << endl;
     }
   }
 
-  cout << "Here is queue after loop: " << numbers -> dequeue() -> getVal() << endl;
+  //cout << "Here is queue after loop: " << numbers -> dequeue() -> getVal() << endl;
   //READ OUT POSTFIX NOTATION:
   cout << "Here is the postfix notation (using Shunting Yard algorithm): ";
   node* toAddNum;
@@ -65,16 +77,21 @@ int main() {
 
   //cout << numbers -> dequeue() -> getVal(); 
   //cout the numbers
-  //while (numbers -> isEmpty() == false) {
-  //toAddNum = numbers -> dequeue();
-  //cout << toAddNum -> getVal() << "queue";
-  //}
+
+  cout << "from queue" << endl;
+  
+  while (numbers -> isEmpty() == false) {
+  toAddNum = numbers -> dequeue();
+  cout << toAddNum -> getVal() << " ";
+  }
+
+  cout << "from stack" << endl;
   //cout the operators
-  //while (operators -> peek() != NULL) {
-  //toAddOp = operators -> pop();
-  // cout << toAddOp -> getVal() << " ";
-  //}
-  //cout << endl;
+  while (operators -> peek() != NULL) {
+  toAddOp = operators -> pop();
+   cout << toAddOp -> getVal() << " ";
+  }
+  cout << endl;
   return 0;
 }
 

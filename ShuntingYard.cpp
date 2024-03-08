@@ -202,14 +202,21 @@ void readPost(node* current) {
   
 }
 void readInf(node* current, int dir) { //1 left -1 right
+
+  int val = (int)(current -> getVal());
+
+  if (val < 47 || val > 58) {
+    cout << "( ";
+  }
+  
   if (current -> getL() == NULL) {
 
-    if (dir == 1) {
-      cout << "( " << current -> getVal() << " ";
-    }
-    else if (dir == -1) {
-      cout << current -> getVal() << " ) ";
-    }
+    //if (dir == 1) {
+    cout << current -> getVal() << " ";
+    //}
+    //else if (dir == -1) {
+    //cout << current -> getVal() << " ) ";
+    //}
     return;
   }
 
@@ -223,7 +230,10 @@ void readInf(node* current, int dir) { //1 left -1 right
   //else {
     cout << current -> getVal() << " ";
     //}
-  readInf(current -> getR(), -1);
+ readInf(current -> getR(), -1);
+ if (val < 47 || val > 58) {
+   cout << ") ";
+ }
 }
 void readPre(node* current) {
   if (current -> getL() == NULL || current -> getR() == NULL) {

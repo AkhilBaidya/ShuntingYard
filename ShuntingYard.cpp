@@ -138,7 +138,7 @@ int main() {
 
   char readOut[10];
   cout << "Would you like to print out the expression in postfix (post), infix (in), or prefix (pre)? " << endl;
-  cin >> readout;
+  cin >> readOut;
 
   if (!strcmp(readout, "post")) { 
     readPost(base); //read tree out in postfix

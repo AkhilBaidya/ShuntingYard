@@ -5,7 +5,8 @@
 
 /*Notes: In this project, an expression in infix (parentheses, ^, +, -, *, /, and single digit numbers are allowed) is read and is converted into postfix through the Shunting Yard algorithm. The user should end their expression, when entering into the program, with a '|' in order for the program to work.
 
-The user will be shown this expression in postfix. This postfix expression will then be put into an expression tree, where the user will be prompted to print out the expression back in postfix, into infix, or into prefix. */
+The user will be shown this expression in postfix. This postfix expression will then be put into an expression tree, where the user will be prompted to print out the expression back in postfix, into infix, or into prefix. The user should input "post," "in," or "pre" to determine the reading method.
+*/
 
 /*Main sources:
 Referred to Wikipedia article on Shunting Yard (https://en.wikipedia.org/wiki/Shunting_yard_algorithm). This taught me how numbers read in are added immediately to queue and how operators are initially added to a stack, in Shunting Yard. When an operator is added to the stack and the current stack head has a greater precedence, then the stack head is added to the queue and removed from the stack before adding the operator (this is looped until this difference in precedence is no longer the case). Additionally, the algorithm notes how after a right parenthesis is read in, every operator in the stack, until a left parenthesis is at the head, is moved to the queue. The queue is the postfix expression.
@@ -140,15 +141,15 @@ int main() {
   cout << "Would you like to print out the expression in postfix (post), infix (in), or prefix (pre)? " << endl;
   cin >> readOut;
 
-  if (!strcmp(readout, "post")) { 
+  if (!strcmp(readOut, "post")) { 
     readPost(base); //read tree out in postfix
   }
 
-  else if (!strcmp(readout, "in")) {
+  else if (!strcmp(readOut, "in")) {
     readInf(base); //read tree out in infix
   }
 
-  else if (!strcmp(readout, "pre")) {
+  else if (!strcmp(readOut, "pre")) {
     readPre(base); //read tree out in prefix
   }
   

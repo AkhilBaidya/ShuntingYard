@@ -1,64 +1,61 @@
+/*C++ Data Structures: Stack Class
+  by Akhil Baidya
+
+  Date of Submission: 3/7/24
+
+  Notes: These are the function definitions for the stack class. The constructor, destructor, push (adding to stack), pop (deleting from stack, and peek (returning head of stack) functions are defined.
+  
+  Reference:
+  Referred to https://web.cecs.pdx.edu/~karlaf/CS163_Slides/CS163_Topic4.pdf by Professor Fant (put on Canvas) to understand the "first in, last out" nature of stacks.
+ */
+
 #include <iostream>
 #include <cstring>
 #include "stack.h"
 
 using namespace std;
 
-//constructor
+//Constructor
 stack::stack(){
-  header = NULL;
+  header = NULL; //empty stack
 }
 
-//destructor
+//Destructor
 stack::~stack(){
   while (header != NULL) {
     node* prevHead = header;
     header = header -> getN(); //shorten stack
-    delete prevHead;
+    delete prevHead; //delete content of previous header
   }
   delete header; //delete remaining header
 }
 
-//functions
+//Adding to Stack:
 void stack::push(node* input){
   node* prevHead = header;
-  header = input;
-  header -> setN(prevHead); //keep on adding to the top
+  header = input; //set input as the next header (and its next node as the previous header)
+  header -> setN(prevHead);
 }
 
+//Deleting from Stack:
 node* stack::pop(){
 
   node* prevHead;
   
   if (header -> getN() != NULL) {
-
     prevHead = header;
-    header = header -> getN();
+    header = header -> getN(); //set header as its next node (this original header will be returned)
     prevHead -> setN(NULL);
-    /*node* prevHead = new node();
-    prevHead = header;
-    cout << "header value: " << prevHead -> getVal() << endl;
-    popped -> setVal(prevHead -> getVal());
-    cout << "value going to pop (should be same): " << popped -> getVal() << endl;
-    cout << "header's next val: " << header -> getN() -> getVal() << endl;
-    //node* toRet = new node(prevHead -> getVal()); 
-    header = header -> getN(); //delete header
-    cout << "header's moved to next (should be same): " << header -> getVal() << endl;
-  
-    cout << "going to delete the old header junk " << (*prevHead).getVal() << endl;
-    prevHead -> setN(NULL);
-    delete prevHead;
-    cout << "then" << endl;
-    cout << "checking return val: " << popped -> getVal() << endl;
-    */
   }
 
-  else {
-    prevHead = header;
+  else { //if there is only a header in the linked list
+    prevHead = header; //get the header
     header = NULL;
   }
-  return prevHead; //return header
+  return prevHead; //return the original header 
 }
+
+//Getting head of the Stack:
 node* stack::peek(){
-  return header; //simply return the top
+  return header; //return the header
 }

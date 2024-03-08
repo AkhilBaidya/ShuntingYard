@@ -3,10 +3,15 @@
 
 //Date of Submission: 3/7/24
 
-/*Notes: In this project, an expression in infix (parentheses, ^, +, -, *, /, and single digit numbers are allowed) is read and is converted into postfix through the Shunting Yard algorithm.
+/*Notes: In this project, an expression in infix (parentheses, ^, +, -, *, /, and single digit numbers are allowed) is read and is converted into postfix through the Shunting Yard algorithm. The user should end their expression, when entering into the program, with a '|' in order for the program to work.
 
-The user will be shown this postfix. This postfix expression will then be put into an expression tree, where the user will be prompted to print out the expression back in postfix, into infix, or into prefix.
- */
+The user will be shown this expression in postfix. This postfix expression will then be put into an expression tree, where the user will be prompted to print out the expression back in postfix, into infix, or into prefix. */
+
+/*Main sources:
+Referred to Wikipedia article on Shunting Yard (https://en.wikipedia.org/wiki/Shunting_yard_algorithm). This taught me how numbers read in are added immediately to queue and how operators are initially added to a stack, in Shunting Yard. When an operator is added to the stack and the current stack head has a greater precedence, then the stack head is added to the queue and removed from the stack before adding the operator (this is looped until this difference in precedence is no longer the case). Additionally, the algorithm notes how after a right parenthesis is read in, every operator in the stack, until a left parenthesis is at the head, is moved to the queue. The queue is the postfix expression.
+
+Referred to Wikipedia article on Binary Expression Tree (https://en.wikipedia.org/wiki/Binary_expression_tree). This taught me how the tree is created on a stack. Numbers read in are added to the stack. However, when an operator is read in, the most recent two numbers added to the stack are removed and made the children of the operator. The operator is then added to the stack.
+*/
 
 #include <iostream>
 #include <cstring>
@@ -21,171 +26,166 @@ void readPost(node*); //reading it out in postfix
 void readInf(node*, int); //reading it out in infix
 void readPre(node*); //reading it out in prefix
 
+//MAIN FUNCTION:
+/*In the main function, the user will input an expression in infix which is converted into postfix.
+The user will also be prompted here to print out an expression tree in postfix, infix, or prefix.*/ 
 int main() {
 
-  queue* numbers = new queue();
-  stack* operators = new stack();
-  //node* toAdd;
+  queue* numbers = new queue(); //numbers are immediately added to a queue in Shunting Yard 
+  stack* operators = new stack(); //operators are initially added to a stack in Shunting Yard
   
-  //READ IN INFIX NOTATION:
+  //READ IN INFIX EXPRESSION FOLLOWING SHUNTING YARD:
   cout << "Please input a mathematical expression in infix seperated by spaces (use single digit integers and end your expression with |)" << endl;
   char input;
   
-  while (cin >> input && input != '|') { //putting cin>>input in the condition suggested by Kevin. Additionally, saw that this syntax is viable online at stack overflow (https://stackoverflow.com/questions/19483126/whats-the-difference-between-whilecin-and-whilecin-num) from user templatetypedef
+  while (cin >> input && input != '|') { //Program will read in characters one-by-one until encountering the "end of line" character (this was decided to be |)
 
-    cout << "in loop" << endl;
-    //if (numbers -> isEmpty() == false) {
-      //cout << "Outputting previous queue member " << numbers -> dequeue() -> getVal() << endl;
-    //}
+    /*Note: Putting cin >> input in the loop's condition, to also perform the read in while continuing the loop, was suggested by Kevin.Additionally, I saw that this syntax is viable online at stack overflow (https://stackoverflow.com/questions/19483126/whats-the-difference-between-whilecin-and-whilecin-num) from user templatetypedef */
+    
+    //Create node out of input:
     node* toAdd = new node(input);
     toAdd -> setVal(input);
     
-    //https://www.cs.cmu.edu/~pattis/15-1XX/common/handouts/ascii.html (referred to this for ASCII conversions)
+
+    //If the input is a number, immediately add it to the queue (based on Wikipedia algorithm for Shunting Yard - see link in comments at top of file):
+    if ((int)input >= 48 && (int) input <= 57) { 
+
+      //Note: Referred to Carnegie Mellon School of Computer Science's ASCII chart to understand what the ASCII values for numbers (as characters) are (https://www.cs.cmu.edu/~pattis/15-1XX/common/handouts/ascii.html)
     
-    if ((int)input >= 48 && (int) input <= 57) { //a number
-      numbers -> enqueue(toAdd);
-      cout << "added " << input << " to queue" << endl;
+      numbers -> enqueue(toAdd); //add to queue
     }
 
-    else if (input != ' ') { //consider the input an operator
+    //Otherwise:
+    else if (input != ' ') {
 
-      //referred to https://en.wikipedia.org/wiki/Shunting_yard_algorithm for revisions with algorithm Shunting Yard
-      
-      if (input == ')' && operators -> peek() != NULL) { //if met with a right parenthesis need to output everything (all operators) within the parenthesis (as they are typically solved first in infix)
+      //If the input is a right parenthesis, add operators in the stack to the queue until encountering a left parenthesis in the stack (based on Wikipedia algorithm for Shunting Yard - see link in comments at top of file):
+      if (input == ')' && operators -> peek() != NULL) {
 
-	while (operators -> peek() -> getVal() != '(') {
+	//Reason: if met with a right parenthesis, need to output everything (all operators) within the parenthesis (as they are typically solved first in infix)
+
+	while (operators -> peek() -> getVal() != '(') { //while not encountering the left parenthesis,
 	  node* op = new node();
-	  op = operators -> pop();
-	  numbers -> enqueue(op);
+	  op = operators -> pop(); //get head of stack 
+	  numbers -> enqueue(op); //move to the queue
 	}
 
+	//Add the remaining left parenthesis to the queue, at the end of this loop:
 	node* op = new node();
 	op = operators -> pop();
-	numbers -> enqueue(op); //add the left parenthesis at the end
+	numbers -> enqueue(op);
 	
 	
       }
-      
-      else if (operators -> peek() != NULL && toAdd -> getOrd() <= operators -> peek() -> getOrd() && input != '(') { //if the operator we are adding is less in precedence, pop out the current head of stack to the queue (does not apply to left parenthesis)
 
-	while (operators -> peek() != NULL && toAdd -> getOrd() <= operators -> peek() -> getOrd()) {
+      //If the input is a regular operator, but the current head of the stack has higher or equal precedence, pop the head to the queue. Continue doing this until the head does not have higher or equal precedence and then add the input to the stack  (based on Wikipedia algorithm for Shunting Yard - see link in comments at top of file):
+      else if (operators -> peek() != NULL && toAdd -> getOrd() <= operators -> peek() -> getOrd() && input != '(') { //does not apply to left parenthesis
+
+	//Reason: otherwise, the head might have a lower precendence than the operator before it. It will be added to the right of the expression (when popping from the stack), in postfix, first and would be erroneously interpreted as having a higher precendence
+
+	while (operators -> peek() != NULL && toAdd -> getOrd() <= operators -> peek() -> getOrd()) { //loop this check
 	  node* op = new node();
 	  op = operators -> pop();
-	  cout << "looking at " << op -> getVal() << "against the new " << input << endl;
-	  numbers -> enqueue(op);
-	  cout << "moved " << op -> getVal() << " to queue" << endl;
+	  numbers -> enqueue(op); //continue popping head of stack to queue if true
 	}
-	operators -> push(toAdd);
+	operators -> push(toAdd); //finally add the input to stack
       }
-      
+
+      //If the input is just an operator (based on Wikipedia algorithm for Shunting Yard - see link in comments at top of file):
       else {
-	operators -> push(toAdd);
+	operators -> push(toAdd); //add it to the stack
       }
-      cout << "added " << input << " to stack" << endl;
     }
   }
 
-  //cout << "Here is queue after loop: " << numbers -> dequeue() -> getVal() << endl;
-  //READ OUT POSTFIX NOTATION:
+  //READ OUT USER INPUT IN POSTFIX NOTATION AFTER USING SHUNTING YARD:
   cout << "Here is the postfix notation (using Shunting Yard algorithm): ";
   node* toAddNum = new node();
   node* toAddOp = new node();
-  queue* postFix = new queue();
-  stack* tree = new stack();
+  queue* postFix = new queue(); //new queue to be used for an expression tree
+  stack* tree = new stack(); //stack that will contain tree
 
-  //cout << numbers -> dequeue() -> getVal(); 
-  //cout the numbers
 
-  cout << "from queue" << endl;
-  
+  //Read out everything from the queue:
   while (numbers -> isEmpty() == false) {
-  toAddNum = numbers -> dequeue();
-  toAddNum -> setN(NULL);
-  if (toAddNum -> getVal() != '(' && toAddNum -> getVal() != ')') {
-    cout << toAddNum -> getVal() << " ";
-    postFix -> enqueue(toAddNum);
-  }
+    toAddNum = numbers -> dequeue(); //get next element in queue
+    toAddNum -> setN(NULL);
+    
+    if (toAddNum -> getVal() != '(' && toAddNum -> getVal() != ')') { //don't read out parentheses in postfix
+      cout << toAddNum -> getVal() << " "; //print
+      postFix -> enqueue(toAddNum); //add to a new queue to be used with the expression tree!
+    }
   }
 
-  cout << "from stack" << endl;
-  //cout the operators
+  //Read out remaining operators in the stack:
   while (operators -> peek() != NULL) {
-  toAddOp = operators -> pop();
-  toAddOp -> setN(NULL);
-  if(toAddOp -> getVal() != '(' && toAddOp -> getVal() != ')') {
-    cout << toAddOp -> getVal() << " ";
-    postFix -> enqueue(toAddOp);
+    toAddOp = operators -> pop(); //get next element in stack
+    toAddOp -> setN(NULL);
+
+    if(toAddOp -> getVal() != '(' && toAddOp -> getVal() != ')') { //don't read out parentheses (doesn't matter in postfix)
+      cout << toAddOp -> getVal() << " "; //print
+      postFix -> enqueue(toAddOp); //add to a new queue to be used with the expression tree!
+    }
   }
-  }
+  
   cout << endl;
 
-  createTree(postFix, tree);
-  node* base = new node();
+  //CREATE EXPRESSION TREE:
+  createTree(postFix, tree); //uses a queue and stack (based on Wikipedia algorithm for Expression Tree creation - see link in comments at top of file)
+
+  //READ OUT EXPRESSION TREE:
+  node* base = new node(); //get the remaining node in the stack containing the tree (the root)
   base = tree -> peek();
 
   char readOut[10];
   cout << "Would you like to print out the expression in postfix (post), infix (in), or prefix (pre)? " << endl;
   cin >> readout;
 
-  if (!strcmp(readout, "post")) {
-    readPost(base);
+  if (!strcmp(readout, "post")) { 
+    readPost(base); //read tree out in postfix
   }
 
   else if (!strcmp(readout, "in")) {
-    readInf(base, 0);
+    readInf(base, 0); //read tree out in infix
   }
 
   else if (!strcmp(readout, "pre")) {
-    readPre(base);
+    readPre(base); //read tree out in prefix
   }
+  
   return 0;
 }
 
+
+//ADDITIONAL FUNCTIONS:
+
+//This createTree function takes in a queue representing an expression in postfix and creates a binary expression tree on an empty stack:
 void createTree(queue* postFix, stack* tree) {
 
-  //node* right;
-  //node* left;
-  
-  while (postFix -> isEmpty() == false) {
-
-    if (tree -> peek() != NULL) {
-    cout << "currently last in stack: " << tree -> peek() -> getVal();
-    }
+  while (postFix -> isEmpty() == false) { //while the queue is not empty
     
-    node* entry = postFix -> dequeue();
-    int val = (int)(entry -> getVal());
-    //cout << entry -> getVal() << ": " << val << endl;
-    while (val >= 48 && val <= 57) { //a number
-      
-      tree -> push(entry);
-      cout << tree -> peek() -> getVal() << endl;
-      entry = postFix -> dequeue();
-      val = (int)(entry -> getVal());
-      //entry -> setN(NULL);
-      cout << "push to tree" << endl;
+    node* entry = postFix -> dequeue(); //get the value to add to the stack/tree
+    int val = (int)(entry -> getVal()); //get its ASCII value
+
+    //While the input is a number, by that ASCII value, add it to the stack (based on Wikipedia algorithm for Expression Tree creation - see link in comments at top of file):
+    while (val >= 48 && val <= 57) {
+      tree -> push(entry); //add 
+      entry = postFix -> dequeue(); //get next value in queue
+      val = (int)(entry -> getVal()); //check its ASCII
     }
 
-    cout << "done with nums" << endl;
-    //pop out the last two elements of the stack and add it to entry
-    //node* current = new node();
-    //entry -> setN(NULL);
-    if (tree -> peek() != NULL && tree -> peek() -> getN() != NULL) {
-      cout << "entered" << endl;
+    //Now that the while loop is over, the code has encountered an operator, the operator becomes a parent:
+    if (tree -> peek() != NULL && tree -> peek() -> getN() != NULL) { //if there are at least two entries in the stack, make the most recent two the children of the operator, after removing them from the stack, and add the operator to the stack (based on Wikipedia algorithm for Expression Tree creation - see link in comments at top of file)
 
-      //node* right = new node();
+      //Set the first popped stack entry as the right child:
       node* right = tree -> pop();
       entry -> setR(right);
-      cout << "set right of " << entry -> getVal() << "to be " << entry -> getR() -> getVal() << endl;
 
-      //node* left = new node();
+      //Set the second popped stack entry as the left child:
       node* left = tree -> pop();
       entry -> setL(left);
-      cout << "set left of " << entry -> getVal() << "to be " << entry -> getL() -> getVal() << endl;
+
+      //Add operator to stack:
       tree -> push(entry);
-      cout << "added to tree: " << tree -> peek() -> getVal() << endl;
-      //cout << "to be" << tree -> peek() -> getL() -> getVal() << endl;
-      //current = tree -> peek();
-      //cout << "tree is not empty: " << tree -> peek() -> getN() -> getVal() << endl;
     }
   }
   

@@ -1,84 +1,78 @@
+/*C++ Data Structures: Queue Class
+  by Akhil Baidya
+
+  Date of Submission: 3/7/24
+
+  Notes: These are the function definitions for the queue class. This defines how nodes are added to the bottom of the queue and how only the head is removed from the queue (additionally, a constructor, destructor, and check for whether the linked list is empty are defined)
+
+  Reference:
+  Referred to https://web.cecs.pdx.edu/~karlaf/CS163_Slides/CS163_Topic4.pdf by Professor Fant (put on Canvas) to understand the "first in, first out" nature of queues.
+ */
+
 #include <iostream>
 #include <cstring>
 #include "queue.h"
 
 using namespace std;
 
+//Constructor:
 queue::queue() {
-  header = NULL; //constructor
+  header = NULL; //queue is empty
 }
 
+//Destructor:
 queue::~queue() {
   node* current = header;
-
   while (current -> getN() != NULL) {
     current = current -> getN();
-    dequeue();
-  } //remove all elements from the list
+    dequeue(); //remove each element from the queue (remove the head multiple times)
+  }
 }
 
+//Add to Queue:
 void queue::enqueue(node* input) { //add to the end of the linked list
 
-  if (header == NULL) {
+  if (header == NULL) { //if the queue is empty just set the header to the input node
     header = input;
   }
 
-  else if (header -> getN() == NULL) {
+  else if (header -> getN() == NULL) { //if the queue only has a header, set its next node to the input node
     header -> setN(input);
   }
 
-  else {
-
+  else { //otherwise...
+    
     node* current = header;
 
-    cout << "entering while loop" << endl;
-    while (current -> getN() != NULL) {
+    while (current -> getN() != NULL) { //loop to end of linked list
       current = current -> getN();
     }
-    cout << "out" << endl;
-    current -> setN(input); //add to end
+    
+    current -> setN(input); //add input to end
   }
-
-  //node** current  = &header;
-  //if ((*current) == NULL) {
-  //(*current) = input;
-  //}
-
-  //else {
-  //while ((*current) -> getN() != NULL) {
-  //node* prevHead = (*current);
-  //(*current) = prevHead -> getN();
-  //} //point to the point where the next node is null
-  //(*current) -> setN(input); //put input there
-  //}
 }
 
+//Remove head from the Queue:
 node* queue::dequeue() {
 
   node* prevHead = new node();
   
-  if (header -> getN() == NULL) {
+  if (header -> getN() == NULL) { //in the case there is only a header in the queue, set the header to null and return a saved version of it:
     prevHead = header;
     header = NULL;
   }
 
   else {
-  
     prevHead  = header;
-  //prevHead -> setN(NULL);
-
-  //node* toRet = new node(prevHead -> getVal());
-    header = header -> getN(); //set next as the header (removing the header)
-  //delete prevHead;
+    header = header -> getN(); //set the value after the header as the header (removing the header from the queue)
   }
-
-  //cout << "Going to return " << toRet -> getVal() << endl;
-  return prevHead; //return the previous top
+  return prevHead; //return pointer equivalent to the original header
 }
 
+//Check if the Queue is empty:
 bool queue::isEmpty(){
   if (header == NULL) {
-    return true;
+    return true; //if the header is null, the queue is empty
   }
 
   return false;

@@ -1,3 +1,13 @@
+//C++ Data Structures: Shunting Yard Project
+//by Akhil Baidya
+
+//Date of Submission: 3/7/24
+
+/*Notes: In this project, an expression in infix (parentheses, ^, +, -, *, /, and single digit numbers are allowed) is read and is converted into postfix through the Shunting Yard algorithm.
+
+The user will be shown this postfix. This postfix expression will then be put into an expression tree, where the user will be prompted to print out the expression back in postfix, into infix, or into prefix.
+ */
+
 #include <iostream>
 #include <cstring>
 #include "stack.h"
@@ -5,10 +15,11 @@
 
 using namespace std;
 
-void createTree(queue*, stack*);
-void readPost(node*);
-void readInf(node*, int);
-void readPre(node*);
+//Function Prototypes for the Expression Tree:
+void createTree(queue*, stack*); //creating the tree
+void readPost(node*); //reading it out in postfix
+void readInf(node*, int); //reading it out in infix
+void readPre(node*); //reading it out in prefix
 
 int main() {
 
@@ -111,12 +122,22 @@ int main() {
   createTree(postFix, tree);
   node* base = new node();
   base = tree -> peek();
-  readPost(base);
-  cout << endl;
-  readInf(base, 0);
-  cout << endl;
-  readPre(base);
-  cout << endl;
+
+  char readOut[10];
+  cout << "Would you like to print out the expression in postfix (post), infix (in), or prefix (pre)? " << endl;
+  cin >> readout;
+
+  if (!strcmp(readout, "post")) {
+    readPost(base);
+  }
+
+  else if (!strcmp(readout, "in")) {
+    readInf(base, 0);
+  }
+
+  else if (!strcmp(readout, "pre")) {
+    readPre(base);
+  }
   return 0;
 }
 

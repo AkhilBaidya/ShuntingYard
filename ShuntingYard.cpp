@@ -23,7 +23,7 @@ using namespace std;
 //Function Prototypes for the Expression Tree:
 void createTree(queue*, stack*); //creating the tree
 void readPost(node*); //reading it out in postfix
-void readInf(node*, int); //reading it out in infix
+void readInf(node*); //reading it out in infix
 void readPre(node*); //reading it out in prefix
 
 //MAIN FUNCTION:
@@ -145,7 +145,7 @@ int main() {
   }
 
   else if (!strcmp(readout, "in")) {
-    readInf(base, 0); //read tree out in infix
+    readInf(base); //read tree out in infix
   }
 
   else if (!strcmp(readout, "pre")) {
@@ -188,82 +188,65 @@ void createTree(queue* postFix, stack* tree) {
       tree -> push(entry);
     }
   }
-  
-  cout << "done with tree making" << endl;
-  cout << tree -> peek() -> getVal() << endl;
-  cout << tree -> peek() -> getR() -> getVal() << endl;
-  if (tree -> peek() -> getR() -> getR() != NULL) {
-    cout << tree -> peek() -> getR() -> getR() -> getVal() << endl;
-  }
-  else {
-    cout << "no grandchild" << endl;
-  }
   return;
 }
 
+
+//This readPost function takes the root of an expression tree and reads it out in postfix using recursion:
 void readPost(node* current) {
 
-  //cout << current -> getVal() << " ";
-  
-  if (current -> getL() == NULL && current -> getR() == NULL) {
+  if (current -> getL() == NULL && current -> getR() == NULL) { //If at the end of tree, print current value and return
     cout << current -> getVal() << " ";
-  return; //if at end of left or right travel print
-  }
-
-  readPost(current -> getL()); //recurse left
-
-    //if (current -> getR() == NULL) {
-    //cout << current -> getVal() << " ";
-    //return; //if at end of right travel print
-    //}
-    
-  readPost(current -> getR()); //recurse right
-  cout <<current -> getVal() << " ";
-  return;
-  
-}
-void readInf(node* current, int dir) { //1 left -1 right
-
-  int val = (int)(current -> getVal());
-
-  if (val < 47 || val > 58) {
-    cout << "( ";
-  }
-  
-  if (current -> getL() == NULL) {
-
-    //if (dir == 1) {
-    cout << current -> getVal() << " ";
-    //}
-    //else if (dir == -1) {
-    //cout << current -> getVal() << " ) ";
-    //}
     return;
   }
 
-  readInf(current -> getL(), 1);
-  //if (dir == -1) {
-  //cout << current -> getVal() << " ) ";
-  //}
-  //else if (dir == 1) {
-  //cout << "( " << current -> getVal() << " "; 
-  //}
-  //else {
-    cout << current -> getVal() << " ";
-    //}
- readInf(current -> getR(), -1);
- if (val < 47 || val > 58) {
-   cout << ") ";
- }
+  //The pattern of printing left child, right child, and then parent (an operator) is needed for postfix:
+  readPost(current -> getL()); //First recurse left down the tree  
+  readPost(current -> getR()); //Then recurse right down the tree
+  cout << current -> getVal() << " "; //Then print the current value
+  return;
 }
+
+//This readInf function takes the root of an expression tree and reads it out in infix using recursion:
+void readInf(node* current) {
+
+  int val = (int)(current -> getVal()); //get the ASCII value of the current node 
+
+  //If the current node contains an operator (based on its ASCII value), print out a "(" (this will encase every operation in parentheses to help with order of operations):
+  if (val < 47 || val > 58) {
+    cout << "( ";
+  }
+
+  //If at the end of the tree, print out the current value:
+  if (current -> getL() == NULL) {
+    cout << current -> getVal() << " ";
+    return;
+  }
+
+  //The pattern of printing left child, parent (the operator), and then right child is needed for infix:
+  readInf(current -> getL()); //First recurse left down the tree
+  cout << current -> getVal() << " "; //Then print out the current value
+  readInf(current -> getR()); //Then recurse right down the tree
+
+  
+  //If the current node contains an operator (based on its ASCII value), print out a ")" (this will encase every operation in parentheses to help preserve order of operations):
+  if (val < 47 || val > 58) {
+    cout << ") ";
+  }
+}
+
+//This readPre function takes the root of an expression tree and reads it out in prefix using recursion:
 void readPre(node* current) {
+
+  //If at the end of the tree (no children), print out the current value:
   if (current -> getL() == NULL || current -> getR() == NULL) {
     cout << current -> getVal() << " ";
     return;
   }
 
-  cout << current -> getVal() << " ";
-  readPre(current -> getL());
-  readPre(current -> getR());
+  //The pattern of printing out the parent (an operator), the left child (number), and the right child (number) will form prefix notation:
+  cout << current -> getVal() << " "; //First read out current value
+  readPre(current -> getL()); //Then recurse left down the tree
+  readPre(current -> getR()); //Then recurse right down the tree
 }
 

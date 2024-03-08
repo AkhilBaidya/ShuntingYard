@@ -1,3 +1,10 @@
+/*C++ Data Structures: Expression Tree (and Stack/Queue) Node Class
+  by Akhil Baidya
+
+  Date of Submission: 3/7/24
+
+  Notes: This is the header file to the node class. A node object will contain a character and also pointers to a right child, left child, and next node.
+ */
 
 #ifndef NODE
 #define NODE
@@ -11,37 +18,44 @@ class node {
 
  public:
 
-  //referred to https://www.learncpp.com/cpp-tutorial/header-guards/ for how to write a header guard
+  //Note: Referred to article at https://www.learncpp.com/cpp-tutorial/header-guards/, written by user Alex, for how to write a header guard
   
-  //constructor and destructor
+  //Constructors
   node();
   node(char);
+
+  //Destructor
   ~node();
   
-  //content of itself
+  //Content of itself (get/set value):
   void setVal(char);
   char getVal();
 
-  //content of left node
+  //Left node (get/set node):
   void setL(node*);
   node* getL();
 
-  //content of right node
+  //Right node (get/set node): 
   void setR(node*);
   node* getR();
 
-  //content of next node
+  //Next node (get/set node):
   void setN(node*);
   node* getN();
 
-  //get precedence
+  //Get precendence of the value contained by the node:
   int getOrd();
 
  protected:
+  //connected nodes:
   node* left;
   node* right;
   node* next;
+
+  //content
   char val;
+
+  //precendence of content (if expression)
   int precedence;
 };
 
